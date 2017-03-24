@@ -22,4 +22,12 @@ app.server.listen(process.env.PORT || config.env.port);
 // eslint-disable-next-line
 console.log(`Started on port ${app.server.address().port}`);
 
+process.on('SIGINT', () => {
+  app.server.close(() => {
+    process.exit();
+  });
+
+  process.exit(0);
+});
+
 export default app;
