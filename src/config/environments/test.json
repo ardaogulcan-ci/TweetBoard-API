@@ -1,0 +1,22 @@
+{
+    "env": {
+      "port": 9000
+    },
+    "body": {
+      "limit": "10mb"
+    },
+    "cors": {
+      "allowedHeaders": ["Content-Type", "Authorization", "Content-Length", "X-Requested-With"],
+      "origin": "*",
+      "methods": ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
+    },
+    "db": {
+      "host": "localhost",
+      "port": 27017,
+      "name": "tweetboard-test",
+      "username": "tweetboard-api",
+      "password": "656691",
+      "keepAlive": 300000,
+      "timeout": 300000
+    }
+}
