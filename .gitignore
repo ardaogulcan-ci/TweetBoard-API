@@ -40,5 +40,5 @@ jspm_packages
 public
 dist
 .DS_STORE
-src/configs/environments/*.json
-!src/configs/environments/*.sample
+src/config/environments/*.json
+!src/config/environments/*.sample
