@@ -10,7 +10,7 @@
     "prestart": "npm run -s build",
     "lint": "eslint src",
     "pretest": "TYPE=test babel src -s -D -d dist --presets es2015,stage-0",
-    "test": "mocha $(find dist -name '*.spec.js')"
+    "test": "TYPE=test mocha $(find dist -name '*.spec.js')"
   },
   "repository": "ardaogulcan/TweetBoard-SWE573",
   "private": true,

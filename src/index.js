@@ -26,10 +26,10 @@ app.use(bodyParser.urlencoded({
 
 initializeDb(() => {
   app.use('/v1', v1(app));
-  app.server.listen(process.env.PORT || config.env.port);
+  app.server.listen(config.env.port);
 
   // eslint-disable-next-line
-  console.log(`Started on port ${app.server.address().port}`);
+  console.log(`Started on port ${config.env.port}`);
 });
 
 process.on('SIGINT', () => {
