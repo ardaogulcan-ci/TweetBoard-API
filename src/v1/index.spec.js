@@ -1,13 +1,23 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import app from '../';
 
-const expect = chai.expect;
+chai.should();
 
 chai.use(chaiHttp);
 
-describe('API v1/', () => {
-  it('should return api info', () => {
-    const dummy = { version: 1 };
-    expect(dummy).to.equal = { version: 1 };
+describe('/GET v1', () => {
+  it('it should return version info', (done) => {
+    chai.request(app)
+    .get('/v1')
+    .end((err, res) => {
+      res.should.have.status(200);
+      res.body.should.be.a('object');
+      res.body.should.have.property('name');
+      res.body.should.have.property('documentation');
+      res.body.should.have.property('version');
+      res.body.version.should.equal(1);
+      done();
+    });
   });
 });

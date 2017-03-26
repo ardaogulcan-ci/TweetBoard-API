@@ -4,7 +4,11 @@ export default () => {
   const api = Router();
 
   api.get('/', (req, res) => {
-    res.json({ version: '1' });
+    res.json({
+      name: 'TweetBoard RESTFUL API',
+      version: 1,
+      documentation: 'https://github.com/ardaogulcan-ci/TweetBoard-API/wiki',
+    });
   });
 
   return api;
