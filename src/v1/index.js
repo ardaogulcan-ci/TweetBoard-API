@@ -5,7 +5,7 @@ export default () => {
 
   api.get('/', (req, res) => {
     res.json({
-      name: 'TweetBoard RESTFUL API',
+      name: 'TweetBoard RESTFUL API TEST',
       version: 1,
       documentation: 'https://github.com/ardaogulcan-ci/TweetBoard-API/wiki',
     });
