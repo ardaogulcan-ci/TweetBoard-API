@@ -4,6 +4,8 @@ import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import boom from 'express-boom';
+
 import v1 from './v1';
 import config from './config/environment';
 import initializeDb from './db';
@@ -11,6 +13,7 @@ import initializeDb from './db';
 const app = express();
 app.server = http.createServer(app);
 
+app.use(boom());
 app.use(compression());
 app.use(cors(config.cors));
 app.use(helmet());
@@ -24,8 +27,14 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 
-initializeDb(() => {
+initializeDb()
+.then(() => {
   app.use('/v1', v1(app));
+
+  app.use('*', (req, res) => {
+    res.boom.notFound();
+  });
+
   app.server.listen(config.env.port);
 
   // eslint-disable-next-line

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import config from './config/environment';
 
-export default (callback) => {
+export default () => new Promise((resolve) => {
   const connectionString = `mongodb://${config.db.username}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.name}`;
   const connectionOptions = {
     server: {
@@ -17,8 +17,7 @@ export default (callback) => {
       },
     },
   };
-
+  mongoose.Promise = Promise;
   mongoose.connect(connectionString, connectionOptions);
-
-  callback(mongoose.connection);
-};
+  resolve();
+});

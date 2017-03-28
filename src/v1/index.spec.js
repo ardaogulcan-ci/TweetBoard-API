@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../';
+import helpers from './helpers/specs';
 
 chai.should();
 
@@ -21,3 +22,5 @@ describe('/GET v1', () => {
     });
   });
 });
+
+export { app, helpers };
