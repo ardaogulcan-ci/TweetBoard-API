@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import users from './resources/users';
+
 export default () => {
   const api = Router();
 
@@ -10,6 +12,8 @@ export default () => {
       documentation: 'https://github.com/ardaogulcan-ci/TweetBoard-API/wiki',
     });
   });
+
+  api.use('/users', users);
 
   return api;
 };

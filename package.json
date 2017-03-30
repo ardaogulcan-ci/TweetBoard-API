@@ -9,7 +9,7 @@
     "start": "TYPE=production node dist",
     "prestart": "npm run -s build",
     "lint": "eslint src",
-    "pretest": "TYPE=test babel src -s -D -d dist --presets es2015,stage-0",
+    "pretest": "rm -rf dist | TYPE=test babel src -s -D -d dist --presets es2015,stage-0",
     "test": "TYPE=test mocha $(find dist -name '*.spec.js')"
   },
   "repository": "ardaogulcan/TweetBoard-SWE573",
@@ -24,7 +24,12 @@
     "express": "^4.13.3",
     "express-boom": "^2.0.0",
     "helmet": "^3.5.0",
-    "mongoose": "^4.9.1"
+    "lodash": "^4.17.4",
+    "mongoose": "^4.9.1",
+    "mongoose-slug-hero": "^1.0.8",
+    "randomstring": "^1.1.5",
+    "slug": "git+https://git@github.com/180-g/node-slug",
+    "validator": "^7.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
