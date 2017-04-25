@@ -2,12 +2,13 @@ import mongoose from 'mongoose';
 import slugHero from 'mongoose-slug-hero';
 
 import Box from './box';
+import { SHARE_TYPE } from '../../helpers/enums';
 
 const Schema = mongoose.Schema;
 
 const boardSchema = new Schema({
-  title: String,
-  creator: String,
+  title: { type: String, required: true },
+  creator: { type: String, required: true },
   boxes: [Box],
   users: [
     {
@@ -21,7 +22,12 @@ const boardSchema = new Schema({
     },
   ],
   shared: {
-    type: String, // constants/share
+    type: {
+      type: String,
+      required: true,
+      enum: Object.values(SHARE_TYPE),
+      default: SHARE_TYPE.PUBLIC,
+    },
     token: String,
   },
   deletedAt: Date,

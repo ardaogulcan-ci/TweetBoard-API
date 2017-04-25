@@ -82,7 +82,7 @@ describe('Resource: Users', () => {
       });
     });
 
-    it('it should fail when given id is not mongo object id', (done) => {
+    it('it should fail 400 when given id is not mongo object id', (done) => {
       chai.request(app)
       .get('/v1/users/john')
       .end((err, res) => {
@@ -130,7 +130,7 @@ describe('Resource: Users', () => {
         });
       });
     });
-    it('it should fail if email is already taken', (done) => {
+    it('it should fail 400 if email is already taken', (done) => {
       createTestUser()
       .then(() => {
         const duplicateUser = createTestUserObject();
@@ -146,7 +146,7 @@ describe('Resource: Users', () => {
         });
       });
     });
-    it('it should fail if required fields are not provided', (done) => {
+    it('it should fail 400 if required fields are not provided', (done) => {
       const userObject = createTestUserObject();
       userObject.email = null;
 
