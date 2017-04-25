@@ -28,7 +28,7 @@
     "mongoose": "^4.9.1",
     "mongoose-slug-hero": "^1.0.8",
     "randomstring": "^1.1.5",
-    "slug": "git+https://git@github.com/180-g/node-slug",
+    "slug": "^0.9.1",
     "validator": "^7.0.0"
   },
   "devDependencies": {
