@@ -4,7 +4,7 @@
   "description": "RESTFUL API for TweetBoard",
   "main": "dist",
   "scripts": {
-    "dev": "TYPE=development nodemon -w src --exec \"babel-node src --presets es2015,stage-0\"",
+    "dev": "TYPE=development nodemon -w src --exec \"npm run test && babel-node src --presets es2015,stage-0\"",
     "build": "TYPE=production babel src -D -d dist --ignore **/*.spec.js --presets es2015,stage-0",
     "start": "TYPE=production node dist",
     "prestart": "npm run -s build",

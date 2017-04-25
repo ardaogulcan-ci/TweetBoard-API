@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import users from './resources/users';
+import boards from './resources/boards';
 
 export default () => {
   const api = Router();
@@ -14,6 +15,7 @@ export default () => {
   });
 
   api.use('/users', users);
+  api.use('/boards', boards);
 
   return api;
 };
