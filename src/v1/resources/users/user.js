@@ -7,16 +7,16 @@ const Schema = mongoose.Schema;
 const saltFactor = 10;
 
 const userSchema = new Schema({
-  name: {
-    first: { type: String, required: true },
-    last: String,
-  },
   title: String,
   slug: { type: String, required: true },
   social: {
     twitter: {
+      token: {
+        accessToken: String,
+        accessTokenSecret: String,
+      },
       username: String,
-      token: String,
+      id: String,
     },
   },
   email: {

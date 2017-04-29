@@ -10,8 +10,6 @@ chai.use(chaiHttp);
 
 function createTestUserObject() {
   const testUser = new User();
-  testUser.name.first = 'John';
-  testUser.name.last = 'Doe';
   testUser.title = 'John Doe';
   testUser.email = 'johndoe@example.com';
   testUser.password = '123456';
@@ -56,8 +54,15 @@ describe('Resource: Users', () => {
           res.should.have.status(200);
           res.body.should.be.a('array');
           res.body.length.should.be.eql(1);
-          res.body[0].title.should.be.eql('John Doe');
           res.body[0].slug.should.be.eql('john-doe');
+          res.body[0].should.not.to.have.property('email');
+          res.body[0].should.not.to.have.property('password');
+          res.body[0].should.not.to.have.property('privileges');
+          res.body[0].should.not.to.have.property('privileges');
+          if (res.body[0].social && res.body[0].social.twitter) {
+            res.body[0].social.twitter.should.not.to.have.property('token');
+            res.body[0].social.twitter.should.not.to.have.property('id');
+          }
           done();
         });
       });
@@ -76,7 +81,6 @@ describe('Resource: Users', () => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.not.to.have.property('password');
-          res.body.should.have.property('title');
           done();
         });
       });
@@ -104,7 +108,6 @@ describe('Resource: Users', () => {
         res.should.have.status(201);
         res.body.should.be.a('object');
         res.body.password.should.not.be.eql(userObject.password);
-        res.body.title.should.be.eql('John Doe');
         res.body.slug.should.be.eql('john-doe');
         res.body.should.have.property('updatedAt');
         res.body.should.have.property('createdAt');
@@ -124,7 +127,6 @@ describe('Resource: Users', () => {
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
-          res.body.title.should.be.eql('John Doe');
           res.body.slug.should.be.eql('john-doe-2');
           done();
         });
@@ -167,7 +169,7 @@ describe('Resource: Users', () => {
       createTestUser()
       .then((user) => {
         const updatedUser = user.toObject();
-        updatedUser.name.first = 'Sue';
+        updatedUser.title = 'Sue Doe';
         chai.request(app)
         // eslint-disable-next-line
         .put(`/v1/users/${user._id}`)
@@ -176,7 +178,6 @@ describe('Resource: Users', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.name.first.should.be.eql('Sue');
           res.body.title.should.be.eql('Sue Doe');
           done();
         });
@@ -186,7 +187,7 @@ describe('Resource: Users', () => {
       createTestUser()
       .then((user) => {
         const updatedUser = user.toObject();
-        updatedUser.name.first = 'Sue';
+        updatedUser.title = 'Sue Doe';
         chai.request(app)
         // eslint-disable-next-line
         .put(`/v1/users/${user._id}`)

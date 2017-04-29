@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import users from './resources/users';
 import boards from './resources/boards';
+import auth from './resources/auth';
 
 export default () => {
   const api = Router();
@@ -16,6 +17,7 @@ export default () => {
 
   api.use('/users', users);
   api.use('/boards', boards);
+  api.use('/auth', auth);
 
   return api;
 };
