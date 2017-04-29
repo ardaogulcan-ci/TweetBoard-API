@@ -8,7 +8,7 @@ const router = Router();
 // List Users
 router.get('/', (req, res) => {
   User.find({ deletedAt: null })
-  .select('-password')
+  .select('title slug social.twitter.username profile.picture')
   .sort('-id')
   .exec()
   .then((users) => {
@@ -58,8 +58,6 @@ router.post('/', (req, res) => {
     data.password = randomstring.generate(12);
   }
 
-  data.title = `${data.name.first} ${data.name.last}`;
-
   const newUser = new User(data);
 
   newUser.save()
@@ -98,12 +96,6 @@ router.put('/:userId', (req, res) => {
   if (Object.prototype.hasOwnProperty.call(data, 'slugs')) {
     delete data.slugs;
   }
-
-  if (Object.prototype.hasOwnProperty.call(data, 'title')) {
-    delete data.title;
-  }
-
-  data.title = `${data.name.first} ${data.name.last}`;
 
   User.findOneAndUpdate({ _id: userId }, data, { new: true })
   .then((user) => {

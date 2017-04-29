@@ -4,7 +4,7 @@
   "description": "RESTFUL API for TweetBoard",
   "main": "dist",
   "scripts": {
-    "dev": "TYPE=development nodemon -w src --exec \"npm run test && babel-node src --presets es2015,stage-0\"",
+    "dev": "TYPE=development nodemon -w src --exec \"npm run lint && babel-node src --presets es2015,stage-0\"",
     "build": "TYPE=production babel src -D -d dist --ignore **/*.spec.js --presets es2015,stage-0",
     "start": "TYPE=production node dist",
     "prestart": "npm run -s build",
@@ -24,10 +24,14 @@
     "express": "^4.13.3",
     "express-boom": "^2.0.0",
     "helmet": "^3.5.0",
+    "jsonwebtoken": "^7.4.0",
     "lodash": "^4.17.4",
     "mongoose": "^4.9.1",
     "mongoose-slug-hero": "^1.0.8",
+    "oauth": "^0.9.15",
     "randomstring": "^1.1.5",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.3",
     "slug": "^0.9.1",
     "validator": "^7.0.0"
   },
