@@ -10,7 +10,7 @@ import v1 from './v1';
 import config from './config/environment';
 import initializeDb from './db';
 
-const app = express();
+const app =  express();
 app.server = http.createServer(app);
 
 app.use(boom());
