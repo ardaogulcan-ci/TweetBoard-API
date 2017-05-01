@@ -12,6 +12,7 @@ const TwitterStrategy = new TwitterOAuth({
   consumerKey: config.twitter.consumerKey,
   consumerSecret: config.twitter.consumerSecret,
   callbackURL: config.twitter.callbackURL,
+  apiURL: `${config.api.url}/v1`,
 });
 
 const createTwitterUser = twitterData => new Promise(

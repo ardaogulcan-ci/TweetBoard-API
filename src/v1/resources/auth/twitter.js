@@ -9,7 +9,7 @@ class TwitterOAuth {
       options.consumerKey,
       options.consumerSecret,
       '1.0',
-      `http://127.0.0.1:9000/v1/${options.callbackURL}`,
+      `${options.apiURL}/${options.callbackURL}`,
       'HMAC-SHA1');
   }
 

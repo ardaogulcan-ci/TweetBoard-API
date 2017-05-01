@@ -9,5 +9,30 @@
       "allowedHeaders": ["Content-Type", "Authorization", "Content-Length", "X-Requested-With"],
       "origin": "*",
       "methods": ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
+    },
+    "db": {
+      "host": "localhost",
+      "port": 27017,
+      "name": "",
+      "username": "",
+      "password": "",
+      "keepAlive": 300000,
+      "timeout": 300000
+    },
+    "api": {
+      "url": ""
+    },
+    "client": {
+      "url": "",
+      "authCallback": "/auth-callback.html"
+    },
+    "twitter": {
+      "consumerKey": "",
+      "consumerSecret": "",
+      "callbackURL": "auth/twitter/callback"
+    },
+    "jwt": {
+      "key": "",
+      "expire": "30 days"
     }
 }
