@@ -7,7 +7,9 @@ const router = Router();
 
 // Get User Boards
 router.get('/:userSlug/boards', (req, res) => {
-  const userSlug = req.params.userSlug;
+  let userSlug = req.params.userSlug;
+  userSlug = userSlug === 'me' ? req.user.slug : userSlug;
+
   User.findOne({ slug: userSlug })
   .select('slug')
   .exec()
@@ -16,6 +18,7 @@ router.get('/:userSlug/boards', (req, res) => {
       res.boom.notFound();
       return;
     }
+
     Board.find({ creator: user._id }) // eslint-disable-line
     .select('-boxes')
     .exec()
