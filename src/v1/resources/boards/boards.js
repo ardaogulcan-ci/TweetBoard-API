@@ -23,7 +23,6 @@ router.get('/:boardId', (req, res) => {
   const boardId = req.params.boardId;
 
   Board.findById(boardId)
-  .select('-password')
   .exec()
   .then((board) => {
     if (board === null) {
