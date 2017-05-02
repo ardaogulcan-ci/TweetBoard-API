@@ -6,43 +6,64 @@ import User from '../resources/users/user';
 const authenticatedMethods = ['POST', 'PUT', 'DELETE'];
 const excludedPaths = ['auth'];
 
-export default () => function authMiddleware(req, res, next) { // eslint-disable-line
-  let path = req.path.replace('/v1', '');
-  path = path.split('/')[1];
-
-  if (authenticatedMethods.indexOf(req.method) > -1 && excludedPaths.indexOf(path) < 0) {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-      return res.boom.unauthorized();
-    }
-
-    const authParts = authHeader.split(' ');
-
-    if (authParts.length !== 2) {
-      return res.boom.unauthorized();
-    }
-
-    if (!(/^Bearer$/i.test(authParts[0]))) {
-      return res.boom.unauthorized();
-    }
-
-    const token = authParts[1];
-
-    jwt.verify(token, config.secrets.jwt.key, (error, decoded) => { // eslint-disable-line
-      if (error) {
-        return res.boom.unauthorized();
-      }
-
-      User.findById(decoded.id, '-password -__v', (userError, user) => {
-        if (userError || user === null) {
-          return res.boom.unauthorized();
-        }
-        req.user = user;
-        return next();
-      });
-    });
-  } else {
-    return next();
+const getAuthorizationToken = (authHeader) => {
+  if (!authHeader) {
+    return false;
   }
+
+  const authParts = authHeader.split(' ');
+
+  if (authParts.length !== 2) {
+    return false;
+  }
+
+  if (!(/^Bearer$/i.test(authParts[0]))) {
+    return false;
+  }
+
+  return authParts[1];
+};
+
+const getAuthorizedUser = token => new Promise((resolve, reject) => {
+  jwt.verify(token, config.jwt.key, (error, decoded) => { // eslint-disable-line
+    if (error) {
+      return reject(error);
+    }
+
+    User.findById(decoded.id, '-password -__v', (userError, user) => {
+      if (userError || user === null) {
+        return reject(userError || null);
+      }
+      return resolve(user);
+    });
+  });
+});
+
+const isAuthRequiredEndpoint = (method, path) => {
+  let realPath = path.replace('/v1', '');
+  realPath = realPath.split('/')[1];
+  return (authenticatedMethods.indexOf(method) > -1 && excludedPaths.indexOf(realPath) < 0);
+};
+
+export default () => function authMiddleware(req, res, next) { // eslint-disable-line
+  // return next();
+  const token = getAuthorizationToken(req.headers.authorization);
+  const authRequired = isAuthRequiredEndpoint(req.method, req.path);
+
+
+  if (!token && authRequired) {
+    return res.boom.unauthorized();
+  }
+
+  getAuthorizedUser(token).then((user) => {
+    req.user = user;
+    return next();
+  })
+  .catch((error) => {
+    if (authRequired) {
+      return res.boom.unauthorized(error);
+    }
+
+    return next();
+  });
 };
