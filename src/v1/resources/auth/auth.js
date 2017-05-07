@@ -3,21 +3,16 @@ import randomstring from 'randomstring';
 import jwt from 'jsonwebtoken';
 
 import config from '../../../config/environment';
-import TwitterOAuth from './twitter';
+import Twitter from '../../helpers/twitter';
 import User from '../users/user';
 
 const router = Router();
 
-const TwitterStrategy = new TwitterOAuth({
-  consumerKey: config.twitter.consumerKey,
-  consumerSecret: config.twitter.consumerSecret,
-  callbackURL: config.twitter.callbackURL,
-  apiURL: `${config.api.url}/v1`,
-});
-
 const createTwitterUser = twitterData => new Promise(
   (resolve, reject) => {
-    TwitterStrategy.getUser(twitterData.oAuthAccessToken, twitterData.oAuthAccessTokenSecret)
+    const twitter = new Twitter();
+
+    twitter.getUser(twitterData.oAuthAccessToken, twitterData.oAuthAccessTokenSecret)
     .then((twitterUser) => {
       const user = new User({
         title: twitterUser.name,
@@ -65,13 +60,16 @@ const createJWTToken = data => jwt.sign(
   });
 
 router.get('/twitter', (req, res) => {
-  TwitterStrategy.requestLogin()
+  const twitter = new Twitter();
+  twitter.requestLogin()
   .then(redirectURL => res.redirect(302, redirectURL))
   .catch(error => res.json(error));
 });
 
 router.get('/twitter/callback', (req, res) => {
-  TwitterStrategy.getAccessToken(req.query.oauth_token, req.query.oauth_verifier)
+  const twitter = new Twitter();
+
+  twitter.getAccessToken(req.query.oauth_token, req.query.oauth_verifier)
   .then((data) => {
     setTwitterAccessToken(data)
     .then((user) => {

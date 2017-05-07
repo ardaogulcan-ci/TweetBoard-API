@@ -5,9 +5,17 @@ import Board from '../boards/board';
 
 const router = Router();
 
+router.get('*', (req, res, next) => {
+  if (process.env.TYPE !== 'test' && !req.user) {
+    res.boom.unauthorized();
+  }
+  next();
+});
+
 // Get User Boards
 router.get('/:userSlug/boards', (req, res) => {
   let userSlug = req.params.userSlug;
+
   userSlug = userSlug === 'me' ? req.user.slug : userSlug;
 
   User.findOne({ slug: userSlug })
@@ -20,7 +28,7 @@ router.get('/:userSlug/boards', (req, res) => {
     }
 
     Board.find({ creator: user._id }) // eslint-disable-line
-    .select('-boxes')
+    .select('title slug _id creator')
     .exec()
     .then((board) => {
       if (board === null) {

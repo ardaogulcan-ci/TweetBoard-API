@@ -1,15 +1,15 @@
 import oAuthManager from 'oauth';
+import config from '../../config/environment';
 
-class TwitterOAuth {
-
-  constructor(options) {
+class Twitter {
+  constructor() {
     this.oAuthObject = new oAuthManager.OAuth(
       'https://api.twitter.com/oauth/request_token',
       'https://api.twitter.com/oauth/access_token',
-      options.consumerKey,
-      options.consumerSecret,
+      config.twitter.consumerKey,
+      config.twitter.consumerSecret,
       '1.0',
-      `${options.apiURL}/${options.callbackURL}`,
+      `${config.api.url}/v1/${config.twitter.callbackURL}`,
       'HMAC-SHA1');
   }
 
@@ -60,6 +60,22 @@ class TwitterOAuth {
         });
     });
   }
+
+  searchTweets(query, oAuthAccesToken, oAuthAccesTokenSecret) {
+    return new Promise((resolve, reject) => {
+      this.oAuthObject.get(
+        `https://api.twitter.com/1.1/search/tweets.json?q=${query}`,
+        oAuthAccesToken,
+        oAuthAccesTokenSecret,
+        (error, twitterResponseData) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(JSON.parse(twitterResponseData));
+        });
+    });
+  }
 }
 
-export default TwitterOAuth;
+export default Twitter;
