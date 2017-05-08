@@ -5,6 +5,7 @@ import users from './resources/users';
 import boards from './resources/boards';
 import auth from './resources/auth';
 import userSpesific from './resources/user-spesific';
+import twitter from './resources/twitter';
 
 export default (app) => {
   if (process.env.TYPE !== 'test') {
@@ -24,6 +25,7 @@ export default (app) => {
   api.use('/users', users);
   api.use('/boards', boards);
   api.use('/auth', auth);
+  api.use('/twitter', twitter);
   api.use('/', userSpesific);
 
   return api;

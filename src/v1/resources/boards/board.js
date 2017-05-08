@@ -13,9 +13,9 @@ const boardSchema = new Schema({
   users: [
     {
       user: String,
+      token: String,
       privileges: {
         isAdmin: Boolean,
-        read: Boolean,
         write: Boolean,
         share: Boolean,
       },
