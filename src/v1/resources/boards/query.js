@@ -9,7 +9,6 @@ const querySchema = new Schema({
     latitude: String,
     longitude: String,
   },
-  language: String,
 });
 
 
