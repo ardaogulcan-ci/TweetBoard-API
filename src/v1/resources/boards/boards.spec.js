@@ -70,7 +70,7 @@ describe('Resource: Boards', () => {
     const slugModel = slugHero.Counters['_slug_ctrs'];
     const slugPromise = slugModel.remove({});
 
-    Promise.all([boardPromise, slugPromise]).then(() => done());
+    Promise.all([boardPromise, slugPromise]).then(() => done()).catch(() => done());
   });
 
   // List Boards
@@ -99,7 +99,8 @@ describe('Resource: Boards', () => {
           res.body.length.should.be.eql(1);
           done();
         });
-      });
+      })
+      .catch(() => done());
     });
   });
 
@@ -119,7 +120,8 @@ describe('Resource: Boards', () => {
 
           done();
         });
-      });
+      })
+      .catch(() => done());
     });
 
     it('it should fail 400 when given id is not mongo object id', (done) => {
@@ -183,7 +185,8 @@ describe('Resource: Boards', () => {
           res.body.creator.should.not.be.eql(testBoard.creator);
           done();
         });
-      });
+      })
+      .catch(() => done());
     });
 
     it('it should fail 400 when shared type is not enum', (done) => {
@@ -231,7 +234,8 @@ describe('Resource: Boards', () => {
           res.body.shared.type.should.be.eql(SHARE_TYPE.USER);
           done();
         });
-      });
+      })
+      .catch(() => done());
     });
 
     it('it should update board slug and store old slug', (done) => {
@@ -253,7 +257,8 @@ describe('Resource: Boards', () => {
           res.body.slugs[0].should.be.eql(board.slug);
           done();
         });
-      });
+      })
+      .catch(() => done());
     });
   });
 
@@ -270,7 +275,8 @@ describe('Resource: Boards', () => {
           res.body.should.be.a('object');
           done();
         });
-      });
+      })
+      .catch(() => done());
     });
   });
 });

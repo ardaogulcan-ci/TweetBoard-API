@@ -192,4 +192,43 @@ router.post('/:boardId/boxes/', (req, res) => {
   .catch(error => res.boom.badImplementation(error));
 });
 
+// Update Box
+router.put('/:boardId/boxes/:boxId', (req, res) => {
+  const data = req.body;
+  const boardId = req.params.boardId;
+  const boxId = req.params.boxId;
+
+  Board.findById(boardId)
+  .then((board) => { // eslint-disable-line consistent-return
+    if (board === null) {
+      return res.boom.notFound();
+    }
+
+    const boxIndex = board.boxes.findIndex(box => box._id.toString() === boxId); // eslint-disable-line
+
+    const updatedBoard = board;
+
+    updatedBoard.boxes[boxIndex] = data;
+
+    updatedBoard.save()
+    .then(response => res.json(response.boxes))
+    .catch((error) => {
+      if (error.code === 11000) {
+        res.boom.badRequest(error.message);
+        return;
+      }
+
+      switch (error.name) {
+        case 'CastError':
+        case 'ValidationError':
+          res.boom.badRequest(error.message);
+          break;
+        default:
+          res.boom.badImplementation();
+      }
+    });
+  })
+  .catch(error => res.boom.badImplementation(error));
+});
+
 export default router;

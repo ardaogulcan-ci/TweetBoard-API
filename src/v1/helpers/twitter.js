@@ -61,10 +61,59 @@ class Twitter {
     });
   }
 
-  searchTweets(query, oAuthAccesToken, oAuthAccesTokenSecret) {
+  searchTweets(parameters, oAuthAccesToken, oAuthAccesTokenSecret) {
+    const generatedURL = `https://api.twitter.com/1.1/search/tweets.json?${parameters}`;
     return new Promise((resolve, reject) => {
       this.oAuthObject.get(
-        `https://api.twitter.com/1.1/search/tweets.json?q=${query}`,
+        generatedURL,
+        oAuthAccesToken,
+        oAuthAccesTokenSecret,
+        (error, twitterResponseData) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(JSON.parse(twitterResponseData));
+        });
+    });
+  }
+
+  trendsAvailable(oAuthAccesToken, oAuthAccesTokenSecret) {
+    return new Promise((resolve, reject) => {
+      this.oAuthObject.get(
+        'https://api.twitter.com/1.1/trends/available.json',
+        oAuthAccesToken,
+        oAuthAccesTokenSecret,
+        (error, twitterResponseData) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(JSON.parse(twitterResponseData));
+        });
+    });
+  }
+
+  trendsInPlace(placeId = 1, oAuthAccesToken, oAuthAccesTokenSecret) {
+    return new Promise((resolve, reject) => {
+      this.oAuthObject.get(
+        `https://api.twitter.com/1.1/trends/place.json?id=${placeId}`,
+        oAuthAccesToken,
+        oAuthAccesTokenSecret,
+        (error, twitterResponseData) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve(JSON.parse(twitterResponseData));
+        });
+    });
+  }
+
+  userTimeline(screenName, oAuthAccesToken, oAuthAccesTokenSecret) {
+    return new Promise((resolve, reject) => {
+      this.oAuthObject.get(
+        `https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=${screenName}`,
         oAuthAccesToken,
         oAuthAccesTokenSecret,
         (error, twitterResponseData) => {
