@@ -5,8 +5,9 @@ const router = Router();
 
 // Search
 router.get('/search', (req, res) => {
-  const twitter = new Twitter();
   const tokens = req.user.social.twitter.token;
+
+  const twitter = new Twitter();
 
   const parameters = req.url.split('?')[1];
   twitter.searchTweets(parameters, tokens.accessToken, tokens.accessTokenSecret)
