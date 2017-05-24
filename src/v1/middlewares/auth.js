@@ -4,6 +4,7 @@ import config from '../../config/environment';
 import User from '../resources/users/user';
 
 const authenticatedMethods = ['POST', 'PUT', 'DELETE'];
+const authenticatedRoutes = ['twitter'];
 const excludedPaths = ['auth'];
 
 const getAuthorizationToken = (authHeader) => {
@@ -42,7 +43,9 @@ const getAuthorizedUser = token => new Promise((resolve, reject) => {
 const isAuthRequiredEndpoint = (method, path) => {
   let realPath = path.replace('/v1', '');
   realPath = realPath.split('/')[1];
-  return (authenticatedMethods.indexOf(method) > -1 && excludedPaths.indexOf(realPath) < 0);
+  return ((authenticatedMethods.indexOf(method) > -1 ||
+           authenticatedRoutes.indexOf(realPath) > -1) &&
+           excludedPaths.indexOf(realPath) < 0);
 };
 
 export default () => function authMiddleware(req, res, next) { // eslint-disable-line
